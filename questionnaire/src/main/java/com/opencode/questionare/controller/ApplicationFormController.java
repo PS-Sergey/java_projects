@@ -4,14 +4,17 @@ import com.opencode.questionare.controller.dto.ApplicationFormDTO;
 import com.opencode.questionare.entity.Answer;
 import com.opencode.questionare.entity.ApplicationForm;
 import com.opencode.questionare.entity.Question;
+import com.opencode.questionare.entity.UserApplicationForm;
 import com.opencode.questionare.service.AnswerService;
 import com.opencode.questionare.service.ApplicationFormService;
 import com.opencode.questionare.service.QuestionService;
+import com.opencode.questionare.service.UserApplicationFormService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.Principal;
 import java.util.List;
 
 //@RestController
@@ -27,6 +30,9 @@ public class ApplicationFormController {
 
     @Autowired
     private AnswerService answerService;
+
+    @Autowired
+    private UserApplicationFormService userApplicationFormService;
 
     @PostMapping("/createApplication")
     @ResponseBody
@@ -114,5 +120,13 @@ public class ApplicationFormController {
 //        applicationFormService.createApplicationForm(applicationForm);
 //        return "index";
 //    }
+
+    @PostMapping("/saveUserAnswers")
+    @ResponseBody
+    public void saveUserApplicationForm(@RequestBody UserApplicationForm body, Principal principal) {
+        System.out.println("username is: " + principal.getName());
+        System.out.println("appForm id is: " + body.getApplicationFormId());
+        userApplicationFormService.saveUserApplicationForm(body, principal.getName());
+    }
 
 }
