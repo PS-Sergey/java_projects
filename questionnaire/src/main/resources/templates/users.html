@@ -1,0 +1,12 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Users</title>
+</head>
+<body>
+<div th:each="User : ${users}">
+    <a th:href="@{http://localhost:8080/questionnaire/userForms/{username}(username=${User})}" th:text="${User}">username</a>
+</div>
+</body>
+</html>

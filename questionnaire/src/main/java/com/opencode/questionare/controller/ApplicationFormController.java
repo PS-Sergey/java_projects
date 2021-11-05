@@ -1,10 +1,9 @@
 package com.opencode.questionare.controller;
 
-import com.opencode.questionare.controller.dto.ApplicationFormDTO;
-import com.opencode.questionare.entity.Answer;
-import com.opencode.questionare.entity.ApplicationForm;
-import com.opencode.questionare.entity.Question;
-import com.opencode.questionare.entity.UserApplicationForm;
+import com.opencode.questionare.controller.dto.ApplicationFormResponseDTO;
+import com.opencode.questionare.controller.dto.QuestionResponseDTO;
+import com.opencode.questionare.controller.dto.UserAnswerResponseDTO;
+import com.opencode.questionare.entity.*;
 import com.opencode.questionare.service.AnswerService;
 import com.opencode.questionare.service.ApplicationFormService;
 import com.opencode.questionare.service.QuestionService;
@@ -17,56 +16,47 @@ import org.springframework.web.bind.annotation.*;
 import java.security.Principal;
 import java.util.List;
 
-//@RestController
 @Controller
 @RequestMapping("/questionnaire")
 public class ApplicationFormController {
 
-    @Autowired
     private ApplicationFormService applicationFormService;
-
-    @Autowired
     private QuestionService questionService;
-
-    @Autowired
     private AnswerService answerService;
+    private UserApplicationFormService userApplicationFormService;
 
     @Autowired
-    private UserApplicationFormService userApplicationFormService;
+    public void setApplicationFormService(ApplicationFormService applicationFormService) {
+        this.applicationFormService = applicationFormService;
+    }
+
+    @Autowired
+    public void setQuestionService(QuestionService questionService) {
+        this.questionService = questionService;
+    }
+
+    @Autowired
+    public void setAnswerService(AnswerService answerService) {
+        this.answerService = answerService;
+    }
+
+    @Autowired
+    public void setUserApplicationFormService(UserApplicationFormService userApplicationFormService) {
+        this.userApplicationFormService = userApplicationFormService;
+    }
 
     @PostMapping("/createApplication")
     @ResponseBody
-    public Long createApplicationForm(@RequestBody ApplicationFormDTO body) {
-//        ApplicationForm applicationForm = new ApplicationForm(body.getTitle());
-//        for (QuestionRequestDTO questionRequestDTO : body.getQuestions()) {
-//            Question question = new Question(questionRequestDTO.getQuestionText());
-//            for (AnswerRequestDTO answerRequestDTO : questionRequestDTO.getAnswers()) {
-//                Answer answer = new Answer(answerRequestDTO.getAnswerText(), answerRequestDTO.getAnswerCheck());
-//                question.addAnswer(answer);
-//            }
-//            applicationForm.addQuestion(question);
-//        }
+    public Long createApplicationForm(@RequestBody ApplicationForm body) {
         return applicationFormService.saveApplicationForm(body);
-    }
-
-    @GetMapping("/applications")
-    @ResponseBody
-    public List<ApplicationForm> findAllForms() {
-        return applicationFormService.getAllApplicationForms();
-    }
-
-    @GetMapping("/application/{id}")
-    @ResponseBody
-    public ApplicationForm getApplicationById(@PathVariable Long id) {
-        return applicationFormService.getApplicationFormById(id);
     }
 
     @PutMapping("/updateApplication/{id}")
     @ResponseBody
-    public void updateApplication(@PathVariable Long id, @RequestBody ApplicationFormDTO body) {
-        ApplicationForm applicationForm = applicationFormService.getApplicationFormById(body.getId());
+    public void updateApplication(@PathVariable Long id, @RequestBody ApplicationForm body) {
+        ApplicationForm applicationFormFromDb = applicationFormService.getApplicationFormById(body.getId());
         ApplicationForm updateApplicationForm = applicationFormService.createApplicationForm(body);
-        for (Question question : applicationForm.getQuestions()) {
+        for (Question question : applicationFormFromDb.getQuestions()) {
             boolean existQuestion = false;
             for (Question updatedQuestion : updateApplicationForm.getQuestions()) {
                 if (question.getId() == updatedQuestion.getId()) {
@@ -114,19 +104,39 @@ public class ApplicationFormController {
         model.addAttribute("ApplicationForm", applicationFormService.getApplicationFormById(id));
         return "applicationForm";
     }
-//
-//    @PostMapping("/new")
-//    public String create(@ModelAttribute("ApplicationForm") ApplicationForm applicationForm) {
-//        applicationFormService.createApplicationForm(applicationForm);
-//        return "index";
-//    }
 
     @PostMapping("/saveUserAnswers")
     @ResponseBody
     public void saveUserApplicationForm(@RequestBody UserApplicationForm body, Principal principal) {
-        System.out.println("username is: " + principal.getName());
-        System.out.println("appForm id is: " + body.getApplicationFormId());
         userApplicationFormService.saveUserApplicationForm(body, principal.getName());
     }
 
+    @GetMapping("/userForms/{username}")
+    public String getUserApplicationFormsByUsername(@PathVariable String username, Model model) {
+        List<Long> ids = userApplicationFormService.findApplicationFormIdByUsername(username);
+        List<ApplicationForm> applicationForms = applicationFormService.findApplicationFormsByIdIn(ids);
+        model.addAttribute("userForms", applicationForms);
+        return "usersForms";
+    }
+
+    @GetMapping("/userForms/{username}/{appId}")
+    public String getUserAnswers(@PathVariable String username, @PathVariable Long appId, Model model) {
+        ApplicationForm applicationForm = applicationFormService.getApplicationFormById(appId);
+        UserApplicationForm userApplicationForm = userApplicationFormService.findUserApplicationFormByUsernameAndApplicationFormId(username, appId);
+        ApplicationFormResponseDTO applicationFormResponseDTO = new ApplicationFormResponseDTO(applicationForm);
+        for (Question question : applicationForm.getQuestions()) {
+            QuestionResponseDTO questionResponseDTO = new QuestionResponseDTO(question);
+            for (Answer answer : question.getAnswers()) {
+                for (UserAnswer userAnswer : userApplicationForm.getUserAnswers()) {
+                    if (answer.getId() == userAnswer.getAnswerId()) {
+                        UserAnswerResponseDTO userAnswerResponseDTO = new UserAnswerResponseDTO(answer, userAnswer);
+                        questionResponseDTO.addAnswer(userAnswerResponseDTO);
+                    }
+                }
+            }
+            applicationFormResponseDTO.addQuestion(questionResponseDTO);
+        }
+        model.addAttribute("userAnswers", applicationFormResponseDTO);
+        return "userAnswers";
+    }
 }

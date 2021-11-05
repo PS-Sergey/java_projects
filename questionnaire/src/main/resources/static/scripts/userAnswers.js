@@ -18,8 +18,6 @@ function jsonBuilder() {
 }
 
 
-
-
 $('#ApplicationForm').submit(function(e) {
     $.ajax({
         url: 'http://localhost:8080/questionnaire/saveUserAnswers/',
@@ -28,12 +26,12 @@ $('#ApplicationForm').submit(function(e) {
         contentType: 'application/json; charset=utf-8',
         dataType: 'text',
         async: false,
-        // success: function (msg) {
-        //     window.location.href = 'http://localhost:8080/questionnaire/forms';
-        // },
-        // error: function (response) {
-        //     alert('error: ' + response.message)
-        // }
+        success: function (msg) {
+            window.location.href = 'http://localhost:8080/questionnaire/forms';
+        },
+        error: function (response) {
+            alert('error: ' + response.message)
+        }
         })
         return false
 })

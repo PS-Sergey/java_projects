@@ -1,22 +1,26 @@
 package com.opencode.questionare.controller.dto;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.opencode.questionare.entity.Question;
+import com.opencode.questionare.entity.ApplicationForm;
 
-@JsonIgnoreProperties(ignoreUnknown = true)
+import java.util.ArrayList;
+import java.util.List;
+
 public class ApplicationFormResponseDTO {
 
     private Long id;
     private String title;
-    private Question[] questions;
+    private List<QuestionResponseDTO> questions;
 
-    public ApplicationFormResponseDTO(Long id, String title, Question[] questions) {
-        this.id = id;
-        this.title = title;
-        this.questions = questions;
+    public ApplicationFormResponseDTO(ApplicationForm applicationForm) {
+        this.id = applicationForm.getId();
+        this.title = applicationForm.getTitle();
     }
 
-    public ApplicationFormResponseDTO() {
+    public void addQuestion(QuestionResponseDTO question) {
+        if (questions == null) {
+            this.questions = new ArrayList<QuestionResponseDTO>();
+        }
+        this.questions.add(question);
     }
 
     public Long getId() {
@@ -35,11 +39,11 @@ public class ApplicationFormResponseDTO {
         this.title = title;
     }
 
-    public Question[] getQuestions() {
+    public List<QuestionResponseDTO> getQuestions() {
         return questions;
     }
 
-    public void setQuestions(Question[] questions) {
+    public void setQuestions(List<QuestionResponseDTO> questions) {
         this.questions = questions;
     }
 }

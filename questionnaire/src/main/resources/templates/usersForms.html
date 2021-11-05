@@ -1,0 +1,12 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>userFroms</title>
+</head>
+<body>
+<div th:each="Form : ${userForms}">
+    <a th:href="@{__${#httpServletRequest.requestURI}__/{appId}(appId=${Form.getId()})}" th:text="${Form.getTitle()}">Title</a>
+</div>
+</body>
+</html>

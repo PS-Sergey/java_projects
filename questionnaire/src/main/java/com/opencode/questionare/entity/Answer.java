@@ -6,7 +6,6 @@ import javax.persistence.*;
 
 @Entity
 @Table(name = "answer")
-//@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 public class Answer {
 
     @Id
@@ -63,14 +62,5 @@ public class Answer {
 
     public void setQuestion(Question question) {
         this.question = question;
-    }
-
-    @Override
-    public String toString() {
-        return "Answer{" +
-                "id=" + id +
-                ", answerText='" + answerText + '\'' +
-                ", answerCheck=" + answerCheck +
-                '}';
     }
 }

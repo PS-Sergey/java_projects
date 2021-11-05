@@ -1,53 +1,49 @@
 package com.opencode.questionare.controller.dto;
 
-import com.opencode.questionare.entity.ApplicationForm;
+import com.opencode.questionare.entity.Question;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class QuestionResponseDTO {
 
-    private Long question_id;
-    private String text;
-    private String response;
-    //private ApplicationForm applicationForm;
+    private Long id;
+    private String questionText;
+    private List<UserAnswerResponseDTO> answers;
 
-    public QuestionResponseDTO(Long question_id, String text, String response, ApplicationForm applicationForm) {
-        this.question_id = question_id;
-        this.text = text;
-        this.response = response;
-        //this.applicationForm = applicationForm;
+    public QuestionResponseDTO(Question question) {
+        this.id = question.getId();
+        this.questionText = question.getQuestionText();
     }
 
-    public QuestionResponseDTO() {
+    public void addAnswer(UserAnswerResponseDTO answer) {
+        if (this.answers == null) {
+            this.answers = new ArrayList<UserAnswerResponseDTO>();
+        }
+        this.answers.add(answer);
     }
 
-    public Long getQuestion_id() {
-        return question_id;
+    public Long getId() {
+        return id;
     }
 
-    public void setQuestion_id(Long question_id) {
-        this.question_id = question_id;
+    public void setId(Long id) {
+        this.id = id;
     }
 
-    public String getText() {
-        return text;
+    public String getQuestionText() {
+        return questionText;
     }
 
-    public void setText(String text) {
-        this.text = text;
+    public void setQuestionText(String questionText) {
+        this.questionText = questionText;
     }
 
-    public String getResponse() {
-        return response;
+    public List<UserAnswerResponseDTO> getAnswers() {
+        return answers;
     }
 
-    public void setResponse(String response) {
-        this.response = response;
+    public void setAnswers(List<UserAnswerResponseDTO> answers) {
+        this.answers = answers;
     }
-
-//    public ApplicationForm getApplicationForm() {
-//        return applicationForm;
-//    }
-//
-//    public void setApplicationForm(ApplicationForm applicationForm) {
-//        this.applicationForm = applicationForm;
-//    }
 }

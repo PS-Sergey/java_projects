@@ -29,6 +29,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/questionnaire/updateApplication/**").hasAnyRole("ROLE_ADMIN")
                 .antMatchers("/questionnaire/delApplication/**").hasAnyRole("ROLE_ADMIN")
                 .antMatchers("/questionnaire/updateForms/**").hasAnyRole("ROLE_ADMIN")
+                .antMatchers("/questionnaire/users").hasAnyRole("ROLE_ADMIN")
+                .antMatchers("/questionnaire/userForms/**").hasAnyRole("ROLE_ADMIN")
                 .and()//для H2 DB
                 .authorizeRequests().antMatchers("/console/**").permitAll()//для H2 DB
                 .and()

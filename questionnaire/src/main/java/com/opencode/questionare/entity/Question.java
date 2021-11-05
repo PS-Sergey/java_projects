@@ -8,7 +8,6 @@ import java.util.List;
 
 @Entity
 @Table(name = "question")
-//@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 public class Question {
 
     @Id
@@ -72,13 +71,5 @@ public class Question {
 
     public void setAnswers(List<Answer> answers) {
         this.answers = answers;
-    }
-
-    @Override
-    public String toString() {
-        return "Question{" +
-                "id=" + id +
-                ", questionText='" + questionText + '\'' +
-                '}';
     }
 }

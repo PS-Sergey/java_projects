@@ -6,7 +6,6 @@ import java.util.List;
 
 @Entity
 @Table(name = "application_form")
-//@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 public class ApplicationForm {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -56,13 +55,5 @@ public class ApplicationForm {
 
     public void setQuestions(List<Question> questions) {
         this.questions = questions;
-    }
-
-    @Override
-    public String toString() {
-        return "ApplicationForm{" +
-                "id=" + id +
-                ", title='" + title + '\'' +
-                '}';
     }
 }

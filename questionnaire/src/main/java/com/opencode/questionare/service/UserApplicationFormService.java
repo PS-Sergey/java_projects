@@ -6,6 +6,8 @@ import com.opencode.questionare.repository.UserApplicationFormRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class UserApplicationFormService {
 
@@ -22,5 +24,13 @@ public class UserApplicationFormService {
             userAnswer.setUserApplicationForm(userApplicationForm);
         }
         return userApplicationFormRepository.save(userApplicationForm).getId();
+    }
+
+    public List<Long> findApplicationFormIdByUsername(String username) {
+        return userApplicationFormRepository.findApplicationFormIdByUsername(username);
+    }
+
+    public UserApplicationForm findUserApplicationFormByUsernameAndApplicationFormId(String username, Long appId) {
+        return userApplicationFormRepository.findUserApplicationFormByUsernameAndApplicationFormId(username, appId);
     }
 }

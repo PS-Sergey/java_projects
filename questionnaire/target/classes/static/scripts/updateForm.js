@@ -139,6 +139,7 @@ $('#ApplicationForm').submit(function(e) {
         return false
     } catch (ex) {
         alert(ex.message)
+        return false
     }
 })
 

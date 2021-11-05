@@ -5,6 +5,7 @@ import com.opencode.questionare.entity.User;
 import com.opencode.questionare.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -18,12 +19,6 @@ public class UserController {
     public void setUserService(UserService userService) {
         this.userService = userService;
     }
-
-//    @PostMapping("/createUser")
-//    @ResponseBody
-//    public void saveUser(@RequestBody User user) {
-//        userService.saveUser(user);
-//    }
 
     @PostMapping("/createUser")
     public String saveUser(@RequestParam("username") String username, @RequestParam("password") String password,
@@ -40,18 +35,9 @@ public class UserController {
         return "registration";
     }
 
-//    @GetMapping("/registration")
-//    public String newUser(Model model) {
-//        User user = new User();
-//        Role role = new Role();
-//        user.addRole(role);
-//        model.addAttribute("user", user);
-//        return "registration";
-//    }
-//
-//    @PostMapping("/createUser")
-//    public String createUser(@ModelAttribute("user") User user) {
-//        userService.saveUser(user);
-//        return "redirect:/forms";
-//    }
+    @GetMapping("/questionnaire/users")
+    public String getUsers(Model model){
+        model.addAttribute("users", userService.getAllUsernames());
+        return "users";
+    }
 }
