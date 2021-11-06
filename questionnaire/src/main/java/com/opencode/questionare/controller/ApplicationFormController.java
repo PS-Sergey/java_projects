@@ -85,6 +85,7 @@ public class ApplicationFormController {
     @ResponseBody
     public void deleteApplicationForm(@PathVariable Long id) {
         applicationFormService.deleteApplicationForm(id);
+        userApplicationFormService.deleteAllByApplicationFormId(id);
     }
 
     @GetMapping("/forms")

@@ -5,6 +5,7 @@ import com.opencode.questionare.entity.UserApplicationForm;
 import com.opencode.questionare.repository.UserApplicationFormRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -19,6 +20,10 @@ public class UserApplicationFormService {
     }
 
     public Long saveUserApplicationForm(UserApplicationForm userApplicationForm, String userName) {
+        UserApplicationForm userApplicationFormFromDB = findUserApplicationFormByUsernameAndApplicationFormId(userName, userApplicationForm.getApplicationFormId());
+        if (userApplicationFormFromDB != null) {
+            userApplicationFormRepository.delete(userApplicationFormFromDB);
+        }
         userApplicationForm.setUsername(userName);
         for (UserAnswer userAnswer : userApplicationForm.getUserAnswers()) {
             userAnswer.setUserApplicationForm(userApplicationForm);
@@ -32,5 +37,10 @@ public class UserApplicationFormService {
 
     public UserApplicationForm findUserApplicationFormByUsernameAndApplicationFormId(String username, Long appId) {
         return userApplicationFormRepository.findUserApplicationFormByUsernameAndApplicationFormId(username, appId);
+    }
+
+    @Transactional
+    public void deleteAllByApplicationFormId(Long applicationFormId) {
+        userApplicationFormRepository.deleteAllByApplicationFormId(applicationFormId);
     }
 }

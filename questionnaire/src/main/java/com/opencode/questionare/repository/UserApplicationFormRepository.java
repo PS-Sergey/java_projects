@@ -13,4 +13,6 @@ public interface UserApplicationFormRepository extends JpaRepository<UserApplica
     List<Long> findApplicationFormIdByUsername(String username);
 
     UserApplicationForm findUserApplicationFormByUsernameAndApplicationFormId(String username, Long applicationFormId);
+
+    void deleteAllByApplicationFormId(Long applicationFormId);
 }

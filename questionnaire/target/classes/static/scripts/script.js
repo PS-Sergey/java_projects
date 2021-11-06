@@ -133,6 +133,7 @@ $('#ApplicationForm').submit(function(e) {
     return false
   } catch (e) {
     alert(e.message)
+    return false
   }
 })
 
