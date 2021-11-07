@@ -7,6 +7,7 @@ function addQuestion() {
         cloneDelAnswerButtons[i].addEventListener('click', deleteAnswer)
     }
     applicationForm.append(cloneQuestion)
+    applicationForm.append(document.createElement('br'))
 }
 
 function addAnswer() {
@@ -22,6 +23,15 @@ function deleteQuestion() {
 function deleteAnswer() {
     this.parentNode.remove();
 }
+
+function addBr() {
+    const questions = document.querySelectorAll('.question')
+    for (let i = 0; i < questions.length; i++) {
+        questions[i].after(document.createElement('br'));
+    }
+}
+
+window.onload = addBr;
 
 const applicationForm = document.querySelector('.ApplicationForm')
 
@@ -54,15 +64,12 @@ for (let i = 0; i < answerButtons.length; i++) {
     answerButtons[i].addEventListener('click', addAnswer)
 }
 
-//const saveButton = document.querySelector('#save')
 const delQuestionButtons = document.querySelectorAll('input[name=delQuestin]')
 for (let i = 0; i < delQuestionButtons.length; i++) {
     delQuestionButtons[i].addEventListener('click', deleteQuestion)
 }
 
 questionButton.addEventListener('click', addQuestion)
-//answerButton.addEventListener('click', addAnswer)
-//delQuestionButton.addEventListener('click', deleteQuestion)
 
 const delAnswerButtons = applicationForm.querySelectorAll('input[name=delAnswer]')
 for (let i = 0; i < delAnswerButtons.length; i++) {
@@ -74,10 +81,8 @@ const delApplicationForm = document.querySelector('#delApplicationForm')
 function jsonBuilder() {
     const applicationForm = new Object();
     const app = document.querySelector('.ApplicationForm')
-    //const appId = app.getAttribute('id')
     applicationForm.id = Number(app.getAttribute('id').split('=')[1])
     applicationForm.title = app.querySelector('input[name=title]').value
-    //applicationForm.title = title
 
     const questions = app.querySelectorAll('.question')
     const arrQuestions = [];
@@ -116,20 +121,20 @@ function jsonBuilder() {
     }
     applicationForm.questions = arrQuestions
     const json = JSON.stringify(applicationForm)
-    console.log(json)
     return json
 }
 
-$('#ApplicationForm').submit(function(e) {
+$('#ApplicationForm').submit(function() {
     try {
         $.ajax({
             url: 'http://localhost:8080/questionnaire/updateApplication/' + id,
             type: 'PUT',
             data: jsonBuilder(),
             contentType: 'application/json; charset=utf-8',
-            dataType: 'text',
+            dataType: 'json',
             async: false,
-            success: function (msg) {
+            success: function (response) {
+                alert(response.message)
                 window.location.href = 'http://localhost:8080/questionnaire/forms';
             },
             error: function (response) {
@@ -147,45 +152,17 @@ delApplicationForm.addEventListener('click', () => {
     $.ajax({
                 url: 'http://localhost:8080/questionnaire/delApplication/' + id,
                 type: 'POST',
-                //data: jsonBuilder(),
                 contentType: 'application/json; charset=utf-8',
-                dataType: 'text',
+                dataType: 'json',
                 async: false,
                 success: function (response) {
-                    alert('Анкета удалена')
+                    alert(response.message)
                     window.location.href = 'http://localhost:8080/questionnaire/forms'
                 },
                 error: function (response){
                     alert('error: ' + response.message)
                 }
             })
+    return false
     }
 )
-
-// saveButton.addEventListener('click', () => fetch('http://localhost:8080/application', {
-//   method: 'post',
-//   headers: {
-//     'Content-Type': 'application/json'
-//   },
-//   body: jsonBuilder()
-// }))
-
-// saveButton.addEventListener('click', () => {
-//         try {
-//             const id = applicationForm.getAttribute('id').split('=')[1]
-//             $.ajax({
-//                 url: 'http://localhost:8080/application/' + id,
-//                 type: 'PUT',
-//                 data: jsonBuilder(),
-//                 contentType: 'application/json; charset=utf-8',
-//                 dataType: 'json',
-//                 async: false,
-//                 success: function (msg) {
-//                     alert(msg);
-//                 }
-//             })
-//         } catch (e) {
-//             alert(e.message)
-//         }
-//     }
-// )

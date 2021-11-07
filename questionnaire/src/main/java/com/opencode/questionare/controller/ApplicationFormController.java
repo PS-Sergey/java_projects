@@ -3,12 +3,15 @@ package com.opencode.questionare.controller;
 import com.opencode.questionare.controller.dto.ApplicationFormResponseDTO;
 import com.opencode.questionare.controller.dto.QuestionResponseDTO;
 import com.opencode.questionare.controller.dto.UserAnswerResponseDTO;
+import com.opencode.questionare.controller.response.StringResponse;
 import com.opencode.questionare.entity.*;
 import com.opencode.questionare.service.AnswerService;
 import com.opencode.questionare.service.ApplicationFormService;
 import com.opencode.questionare.service.QuestionService;
 import com.opencode.questionare.service.UserApplicationFormService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -47,13 +50,15 @@ public class ApplicationFormController {
 
     @PostMapping("/createApplication")
     @ResponseBody
-    public Long createApplicationForm(@RequestBody ApplicationForm body) {
-        return applicationFormService.saveApplicationForm(body);
+    public ResponseEntity<StringResponse> createApplicationForm(@RequestBody ApplicationForm body) {
+        Long id = applicationFormService.saveApplicationForm(body);
+        ResponseEntity<StringResponse> response = new ResponseEntity<>(new StringResponse(String.format("Анкета успешно сохранена, id = %s", id)), HttpStatus.OK);
+        return response;
     }
 
     @PutMapping("/updateApplication/{id}")
     @ResponseBody
-    public void updateApplication(@PathVariable Long id, @RequestBody ApplicationForm body) {
+    public ResponseEntity<StringResponse> updateApplication(@PathVariable Long id, @RequestBody ApplicationForm body) {
         ApplicationForm applicationFormFromDb = applicationFormService.getApplicationFormById(body.getId());
         ApplicationForm updateApplicationForm = applicationFormService.createApplicationForm(body);
         for (Question question : applicationFormFromDb.getQuestions()) {
@@ -79,13 +84,17 @@ public class ApplicationFormController {
             }
         }
         applicationFormService.updateApplicationForm(updateApplicationForm);
+        ResponseEntity<StringResponse> response = new ResponseEntity<>(new StringResponse(String.format("Анкета с id = %s успешно обновлена", id)), HttpStatus.OK);
+        return response;
     }
 
     @PostMapping("/delApplication/{id}")
     @ResponseBody
-    public void deleteApplicationForm(@PathVariable Long id) {
+    public ResponseEntity<StringResponse> deleteApplicationForm(@PathVariable Long id) {
         applicationFormService.deleteApplicationForm(id);
         userApplicationFormService.deleteAllByApplicationFormId(id);
+        ResponseEntity<StringResponse> response = new ResponseEntity<>(new StringResponse(String.format("Анкета с id = %s успешно удалена", id)), HttpStatus.OK);
+        return response;
     }
 
     @GetMapping("/forms")

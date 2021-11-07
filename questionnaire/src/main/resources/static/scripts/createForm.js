@@ -7,6 +7,7 @@ function addQuestion() {
     cloneDelAnswerButtons[i].addEventListener('click', deleteAnswer)
   }
   applicationForm.append(cloneQuestion)
+  applicationForm.append(document.createElement('br'))
 }
 
 function addAnswer() {
@@ -86,34 +87,7 @@ function jsonBuilder() {
   return json
 }
 
-// saveButton.addEventListener('click', () => fetch('http://localhost:8080/application', {
-//   method: 'post',
-//   headers: {
-//     'Content-Type': 'application/json'
-//   },
-//   body: jsonBuilder()
-// }))
-
-// saveButton.addEventListener('click', () => {
-//       try {
-//         $.ajax({
-//           url: 'http://localhost:8080/application',
-//           type: 'POST',
-//           data: jsonBuilder(),
-//           contentType: 'application/json; charset=utf-8',
-//           dataType: 'json',
-//           async: false,
-//           success: function (msg) {
-//             alert(msg);
-//           }
-//         })
-//       } catch (e) {
-//         alert(e.message)
-//       }
-//     }
-// )
-
-$('#ApplicationForm').submit(function(e) {
+$('#ApplicationForm').submit(function() {
   try {
     $.ajax({
       url: 'http://localhost:8080/questionnaire/createApplication',
@@ -123,7 +97,7 @@ $('#ApplicationForm').submit(function(e) {
       dataType: 'json',
       async: false,
       success: function (response) {
-        alert('Анкета сохранена')
+        alert(response.message)
         window.location.href = 'http://localhost:8080/questionnaire/forms'
       },
       error: function (response) {

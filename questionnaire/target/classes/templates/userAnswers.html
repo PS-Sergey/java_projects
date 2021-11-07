@@ -19,6 +19,7 @@
                 <textarea name="answerText" th:text="${Answer.getAnswerText()}" readonly th:attr="style=${Answer.getTrueCheck() ? 'color : green' : 'color : red'}"></textarea>
                 <input type="checkbox" name="answerCheck" th:checked="${Answer.getAnswerCheck()}" disabled="disabled"/>
             </div>
+            <br/>
         </div>
     </div>
 </form>

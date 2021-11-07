@@ -24,7 +24,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
                 .antMatchers("/questionnaire/**").authenticated()
-//                .antMatchers("/").permitAll()//для H2 DB
                 .antMatchers("/questionnaire/createApplication").hasAnyRole("ROLE_ADMIN")
                 .antMatchers("/questionnaire/updateApplication/**").hasAnyRole("ROLE_ADMIN")
                 .antMatchers("/questionnaire/delApplication/**").hasAnyRole("ROLE_ADMIN")
@@ -35,7 +34,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests().antMatchers("/console/**").permitAll()//для H2 DB
                 .and()
                 .formLogin()
-//                .defaultSuccessUrl("/forms", true)
+                .defaultSuccessUrl("/", true)
                 .and()
                 .logout().logoutSuccessUrl("/")
                 .and()//для H2 DB
