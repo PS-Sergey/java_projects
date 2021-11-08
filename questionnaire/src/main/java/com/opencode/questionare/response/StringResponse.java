@@ -1,4 +1,4 @@
-package com.opencode.questionare.controller.response;
+package com.opencode.questionare.response;
 
 public class StringResponse {
 

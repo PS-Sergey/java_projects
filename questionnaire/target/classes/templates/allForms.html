@@ -6,7 +6,7 @@
 </head>
 <body>
     <div th:each="ApplicationForm : ${ApplicationForms}">
-        <a th:href="@{http://localhost:8080/questionnaire/forms/{id}(id=${ApplicationForm.getId()})}" th:text="${ApplicationForm.getTitle()}">Title</a>
+        <a th:href="@{http://localhost:8080/questionnaire/applications/forms/{id}(id=${ApplicationForm.getId()})}" th:text="${ApplicationForm.getTitle()}">Title</a>
     </div>
     <a href="/">На главную</a>
 </body>

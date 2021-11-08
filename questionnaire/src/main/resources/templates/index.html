@@ -11,12 +11,12 @@
     <h4><a href="/login">Войти</a></h4>
 </div>
 <div sec:authorize="isAuthenticated()">
-    <h4><a href="/questionnaire/forms">Выбрать анкету</a></h4>
+    <h4><a href="/questionnaire/applications/forms">Выбрать анкету</a></h4>
     <h4><a href="/logout">Выйти</a></h4>
 </div>
 <div sec:authorize="hasRole('ROLE_ADMIN')">
-    <h4><a href="/questionnaire/createForm">Добавить анкету</a></h4>
-    <h4><a href="/questionnaire/users">Ответы пользователей</a></h4>
+    <h4><a href="/questionnaire/constructor/createForm">Добавить анкету</a></h4>
+    <h4><a href="/questionnaire/showAnswers/users">Ответы пользователей</a></h4>
 </div>
 
 </body>

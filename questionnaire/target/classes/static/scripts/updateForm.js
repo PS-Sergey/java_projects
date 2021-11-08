@@ -127,7 +127,7 @@ function jsonBuilder() {
 $('#ApplicationForm').submit(function() {
     try {
         $.ajax({
-            url: 'http://localhost:8080/questionnaire/updateApplication/' + id,
+            url: 'http://localhost:8080/questionnaire/constructor/updateApplication/' + id,
             type: 'PUT',
             data: jsonBuilder(),
             contentType: 'application/json; charset=utf-8',
@@ -135,7 +135,7 @@ $('#ApplicationForm').submit(function() {
             async: false,
             success: function (response) {
                 alert(response.message)
-                window.location.href = 'http://localhost:8080/questionnaire/forms';
+                window.location.href = 'http://localhost:8080/questionnaire/applications/forms';
             },
             error: function (response) {
                 alert('error: ' + response.message)
@@ -150,14 +150,14 @@ $('#ApplicationForm').submit(function() {
 
 delApplicationForm.addEventListener('click', () => {
     $.ajax({
-                url: 'http://localhost:8080/questionnaire/delApplication/' + id,
+                url: 'http://localhost:8080/questionnaire/constructor/delApplication/' + id,
                 type: 'POST',
                 contentType: 'application/json; charset=utf-8',
                 dataType: 'json',
                 async: false,
                 success: function (response) {
                     alert(response.message)
-                    window.location.href = 'http://localhost:8080/questionnaire/forms'
+                    window.location.href = 'http://localhost:8080/questionnaire/applications/forms'
                 },
                 error: function (response){
                     alert('error: ' + response.message)

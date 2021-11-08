@@ -1,4 +1,4 @@
-package com.opencode.questionare.controller.dto;
+package com.opencode.questionare.dto;
 
 import com.opencode.questionare.entity.Answer;
 import com.opencode.questionare.entity.UserAnswer;

@@ -20,14 +20,14 @@ function jsonBuilder() {
 
 $('#ApplicationForm').submit(function(e) {
     $.ajax({
-        url: 'http://localhost:8080/questionnaire/saveUserAnswers/',
+        url: 'http://localhost:8080/questionnaire/applications/saveUserAnswers/',
         type: 'POST',
         data: jsonBuilder(),
         contentType: 'application/json; charset=utf-8',
         dataType: 'text',
         async: false,
         success: function (msg) {
-            window.location.href = 'http://localhost:8080/questionnaire/forms';
+            window.location.href = 'http://localhost:8080/questionnaire/applications/forms';
         },
         error: function (response) {
             alert('error: ' + response.message)

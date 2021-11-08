@@ -90,7 +90,7 @@ function jsonBuilder() {
 $('#ApplicationForm').submit(function() {
   try {
     $.ajax({
-      url: 'http://localhost:8080/questionnaire/createApplication',
+      url: 'http://localhost:8080/questionnaire/constructor/createApplicationForm',
       type: 'POST',
       data: jsonBuilder(),
       contentType: 'application/json; charset=utf-8',
@@ -98,7 +98,7 @@ $('#ApplicationForm').submit(function() {
       async: false,
       success: function (response) {
         alert(response.message)
-        window.location.href = 'http://localhost:8080/questionnaire/forms'
+        window.location.href = 'http://localhost:8080/questionnaire/applications/forms'
       },
       error: function (response) {
         alert('error: ' + response.message)

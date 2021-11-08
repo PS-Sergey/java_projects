@@ -2,7 +2,7 @@ package com.opencode.questionare.controller;
 
 import com.opencode.questionare.entity.Role;
 import com.opencode.questionare.entity.User;
-import com.opencode.questionare.service.UserService;
+import com.opencode.questionare.service.RegistrationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -17,13 +17,23 @@ import javax.validation.constraints.Size;
 
 @Controller
 @Validated
-public class UserController {
+public class Registration {
 
-    UserService userService;
+    private RegistrationService registrationService;
 
     @Autowired
-    public void setUserService(UserService userService) {
-        this.userService = userService;
+    public void setRegistrationService(RegistrationService registrationService) {
+        this.registrationService = registrationService;
+    }
+
+    @GetMapping("/")
+    public String index() {
+        return "index";
+    }
+
+    @GetMapping("/registration")
+    public String newUser() {
+        return "registration";
     }
 
     @PostMapping("/createUser")
@@ -33,7 +43,7 @@ public class UserController {
         User user = new User(username, password);
         Role role = new Role(roleName);
         user.addRole(role);
-        if (!userService.saveUser(user)) {
+        if (!registrationService.saveUser(user)) {
             System.out.println(String.format("Username '%s' is already used", username));
             model.addAttribute("usernameError", "Пользователь с таким именем уже существует");
             return "registration";
@@ -49,16 +59,5 @@ public class UserController {
             model.addAttribute("passwordError", "Пароль должен содержать не менее трех символов");
         }
         return "registration";
-    }
-
-    @GetMapping("/registration")
-    public String newUser() {
-        return "registration";
-    }
-
-    @GetMapping("/questionnaire/users")
-    public String getUsers(Model model){
-        model.addAttribute("users", userService.getAllUsernames());
-        return "users";
     }
 }
