@@ -30,17 +30,17 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/questionnaire/updateForms/**").hasAnyRole("ROLE_ADMIN")
                 .antMatchers("/questionnaire/users").hasAnyRole("ROLE_ADMIN")
                 .antMatchers("/questionnaire/userForms/**").hasAnyRole("ROLE_ADMIN")
-                .and()//для H2 DB
-                .authorizeRequests().antMatchers("/console/**").permitAll()//для H2 DB
+                .and()
+                .authorizeRequests().antMatchers("/console/**").permitAll()
                 .and()
                 .formLogin()
                 .defaultSuccessUrl("/", true)
                 .and()
                 .logout().logoutSuccessUrl("/")
-                .and()//для H2 DB
-                .headers().frameOptions().disable()//для H2 DB
-                .and()//для H2 DB
-                .csrf().disable();//для H2 DB
+                .and()
+                .headers().frameOptions().disable()
+                .and()
+                .csrf().disable();
     }
 
     @Bean
