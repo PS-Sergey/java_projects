@@ -1,8 +1,11 @@
 package com.opencode.questionare.controller;
 
 import com.opencode.questionare.entity.UserApplicationForm;
+import com.opencode.questionare.response.StringResponse;
 import com.opencode.questionare.service.ViewForUserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -34,7 +37,9 @@ public class ViewForUserController {
 
     @PostMapping("/saveUserAnswers")
     @ResponseBody
-    public void saveUserApplicationForm(@RequestBody UserApplicationForm body, Principal principal) {
+    public ResponseEntity<StringResponse> saveUserApplicationForm(@RequestBody UserApplicationForm body, Principal principal) {
         viewForUserService.saveUserApplicationForm(body, principal.getName());
+        ResponseEntity<StringResponse> response = new ResponseEntity<>(new StringResponse("Ответ сохранен"), HttpStatus.OK);
+        return response;
     }
 }

@@ -13,8 +13,8 @@ public class UserApplicationForm {
     @Column(name = "id")
     private Long id;
 
-    @Column(name = "username")
-    private String username;
+    @Column(name = "user_id")
+    private Long userId;
 
     @Column(name = "application_form_id")
     private Long applicationFormId;
@@ -38,12 +38,12 @@ public class UserApplicationForm {
         this.id = id;
     }
 
-    public String getUsername() {
-        return username;
+    public Long getUserId() {
+        return userId;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
+    public void setUserId(Long userId) {
+        this.userId = userId;
     }
 
     public Long getApplicationFormId() {

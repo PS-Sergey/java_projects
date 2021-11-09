@@ -5,6 +5,7 @@ import com.opencode.questionare.entity.UserAnswer;
 import com.opencode.questionare.entity.UserApplicationForm;
 import com.opencode.questionare.repository.ApplicationFormRepository;
 import com.opencode.questionare.repository.UserApplicationFormRepository;
+import com.opencode.questionare.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,11 +16,14 @@ public class ViewForUserService {
 
     private ApplicationFormRepository applicationFormRepository;
     private UserApplicationFormRepository userApplicationFormRepository;
+    private UserRepository userRepository;
 
     @Autowired
-    public ViewForUserService(ApplicationFormRepository applicationFormRepository, UserApplicationFormRepository userApplicationFormRepository) {
+    public ViewForUserService(ApplicationFormRepository applicationFormRepository, UserApplicationFormRepository userApplicationFormRepository,
+                              UserRepository userRepository) {
         this.applicationFormRepository = applicationFormRepository;
         this.userApplicationFormRepository = userApplicationFormRepository;
+        this.userRepository = userRepository;
     }
 
     public List<ApplicationForm> getAllApplicationForms() {
@@ -31,18 +35,19 @@ public class ViewForUserService {
     }
 
     public Long saveUserApplicationForm(UserApplicationForm userApplicationForm, String userName) {
-        UserApplicationForm userApplicationFormFromDB = findUserApplicationFormByUsernameAndApplicationFormId(userName, userApplicationForm.getApplicationFormId());
+        Long userId = userRepository.findUserIdByUsername(userName);
+        UserApplicationForm userApplicationFormFromDB = findUserApplicationFormByUserIdAndApplicationFormId(userId, userApplicationForm.getApplicationFormId());
         if (userApplicationFormFromDB != null) {
             userApplicationFormRepository.delete(userApplicationFormFromDB);
         }
-        userApplicationForm.setUsername(userName);
+        userApplicationForm.setUserId(userId);
         for (UserAnswer userAnswer : userApplicationForm.getUserAnswers()) {
             userAnswer.setUserApplicationForm(userApplicationForm);
         }
         return userApplicationFormRepository.save(userApplicationForm).getId();
     }
 
-    private UserApplicationForm findUserApplicationFormByUsernameAndApplicationFormId(String username, Long appId) {
-        return userApplicationFormRepository.findUserApplicationFormByUsernameAndApplicationFormId(username, appId);
+    private UserApplicationForm findUserApplicationFormByUserIdAndApplicationFormId(Long userId, Long appId) {
+        return userApplicationFormRepository.findUserApplicationFormByUserIdAndApplicationFormId(userId, appId);
     }
 }

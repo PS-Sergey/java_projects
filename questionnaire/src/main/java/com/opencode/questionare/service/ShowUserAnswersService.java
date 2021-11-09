@@ -38,7 +38,7 @@ public class ShowUserAnswersService {
     }
 
     public List<ApplicationForm> getUserApplicationFormsByUsername(String username) {
-        List<Long> ids = userApplicationFormRepository.findApplicationFormIdByUsername(username);
+        List<Long> ids = findApplicationFormIdByUsername(username);
         List<ApplicationForm> applicationForms = applicationFormRepository.findApplicationFormsByIdIn(ids);
         return applicationForms;
     }
@@ -66,7 +66,13 @@ public class ShowUserAnswersService {
         return applicationFormRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("not found Form with id: " + id));
     }
 
+    private List<Long> findApplicationFormIdByUsername(String username) {
+        Long userId = userRepository.findUserIdByUsername(username);
+        return userApplicationFormRepository.findApplicationFormIdByUserId(userId);
+    }
+
     private UserApplicationForm findUserApplicationFormByUsernameAndApplicationFormId(String username, Long appId) {
-        return userApplicationFormRepository.findUserApplicationFormByUsernameAndApplicationFormId(username, appId);
+        Long userId = userRepository.findUserIdByUsername(username);
+        return userApplicationFormRepository.findUserApplicationFormByUserIdAndApplicationFormId(userId, appId);
     }
 }

@@ -9,10 +9,13 @@ import java.util.List;
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
     Long id;
 
+    @Column(name = "username")
     String username;
 
+    @Column(name = "password")
     String password;
 
     @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)

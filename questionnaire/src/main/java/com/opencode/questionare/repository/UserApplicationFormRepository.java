@@ -8,11 +8,13 @@ import java.util.List;
 
 public interface UserApplicationFormRepository extends JpaRepository<UserApplicationForm, Long> {
 
-    @Query(value = "select u.application_form_id from USER_APPLICATION_FORM u where u.username = ?1",
+    @Query(value = "select u.application_form_id from USER_APPLICATION_FORM u where u.user_id = ?1",
             nativeQuery = true)
-    List<Long> findApplicationFormIdByUsername(String username);
+    List<Long> findApplicationFormIdByUserId(Long userId);
 
-    UserApplicationForm findUserApplicationFormByUsernameAndApplicationFormId(String username, Long applicationFormId);
+
+
+    UserApplicationForm findUserApplicationFormByUserIdAndApplicationFormId(Long userId, Long applicationFormId);
 
     void deleteAllByApplicationFormId(Long applicationFormId);
 }

@@ -24,9 +24,10 @@ $('#ApplicationForm').submit(function(e) {
         type: 'POST',
         data: jsonBuilder(),
         contentType: 'application/json; charset=utf-8',
-        dataType: 'text',
+        dataType: 'json',
         async: false,
-        success: function (msg) {
+        success: function (response) {
+            alert(response.message)
             window.location.href = 'http://localhost:8080/questionnaire/applications/forms';
         },
         error: function (response) {
